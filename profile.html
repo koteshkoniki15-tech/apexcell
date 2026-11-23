@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — Shared EV & Tariff Profile</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="profile.html" class="nav-link active">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <span class="summary-chip-badge">Centralized Context Active</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Shared Vehicle & Tariff Profile</h1>
+      <p class="page-subtitle">Configure your electric vehicle specifications and local electricity/fuel rates once. Any update automatically recalibrates all three modules.</p>
+    </div>
+
+    <div class="module-grid">
+      
+      <!-- Input Configuration Panel -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          Vehicle & Energy Parameters
+        </h2>
+        <p class="card-subtitle">Select a curated Indian EV preset or enter custom vehicle parameters.</p>
+
+        <form id="profile-form" onsubmit="return false;">
+          
+          <!-- EV Preset Selector -->
+          <div class="form-group">
+            <label for="vehicle-preset-select" class="form-label">
+              <span>Curated Indian EV Preset</span>
+              <span class="tag tag-info">Quick Select</span>
+            </label>
+            <select id="vehicle-preset-select" class="form-control">
+              <!-- Populated by JS -->
+            </select>
+            <p class="form-hint">Prefills real-world battery size, ARAI efficiency, DC charging limits, and price delta.</p>
+          </div>
+
+          <!-- Vehicle Model Display Name -->
+          <div class="form-group">
+            <label for="custom-name-input" class="form-label">EV Model Name</label>
+            <input type="text" id="custom-name-input" class="form-control" value="Tata Nexon EV (Long Range)">
+          </div>
+
+          <!-- Battery Capacity -->
+          <div class="form-group">
+            <label for="battery-capacity-input" class="form-label">Total Battery Pack Capacity</label>
+            <div class="input-with-unit">
+              <input type="number" id="battery-capacity-input" class="form-control" step="0.1" min="10" max="150" value="40.5">
+              <span class="input-unit">kWh</span>
+            </div>
+            <p class="form-hint">Nominal usable capacity of the battery pack.</p>
+          </div>
+
+          <!-- Rated EV Efficiency -->
+          <div class="form-group">
+            <label for="ev-efficiency-input" class="form-label">Rated Efficiency</label>
+            <div class="input-with-unit">
+              <input type="number" id="ev-efficiency-input" class="form-control" step="0.1" min="2" max="15" value="6.2">
+              <span class="input-unit">km/kWh</span>
+            </div>
+            <p class="form-hint">Distance per kilowatt-hour (~161 Wh/km).</p>
+          </div>
+
+          <!-- Max DC Fast Charging Rate -->
+          <div class="form-group">
+            <label for="max-dc-charge-input" class="form-label">Max DC Charging Acceptance</label>
+            <div class="input-with-unit">
+              <input type="number" id="max-dc-charge-input" class="form-control" step="1" min="15" max="350" value="50">
+              <span class="input-unit">kW DC</span>
+            </div>
+            <p class="form-hint">Vehicle BMS peak DC fast charging rate cap.</p>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 20px 0;">
+
+          <!-- Tariffs & Benchmark Petrol Counterpart -->
+          <div class="form-group">
+            <label for="tariff-preset-select" class="form-label">
+              <span>Home Electricity Tariff</span>
+              <span class="tag tag-success">State DISCOMs</span>
+            </label>
+            <select id="tariff-preset-select" class="form-control">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="electricity-tariff-input" class="form-label">Electricity Tariff Rate</label>
+            <div class="input-with-unit">
+              <input type="number" id="electricity-tariff-input" class="form-control" step="0.10" min="1" max="25" value="7.00">
+              <span class="input-unit">₹/kWh</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="petrol-city-select" class="form-label">
+              <span>Petrol Price Preset</span>
+              <span class="tag tag-warning">City Benchmark</span>
+            </label>
+            <select id="petrol-city-select" class="form-control">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="petrol-price-input" class="form-label">Petrol Price</label>
+            <div class="input-with-unit">
+              <input type="number" id="petrol-price-input" class="form-control" step="0.10" min="50" max="150" value="104.50">
+              <span class="input-unit">₹/litre</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="petrol-efficiency-input" class="form-label">Benchmark Petrol Car Mileage</label>
+            <div class="input-with-unit">
+              <input type="number" id="petrol-efficiency-input" class="form-control" step="0.5" min="5" max="35" value="15.2">
+              <span class="input-unit">km/litre</span>
+            </div>
+            <p class="form-hint">Average fuel economy of equivalent ICE vehicle.</p>
+          </div>
+
+          <div class="form-group">
+            <label for="price-delta-input" class="form-label">Purchase Price Difference (Delta)</label>
+            <div class="input-with-unit">
+              <input type="number" id="price-delta-input" class="form-control" step="10000" min="0" max="5000000" value="550000">
+              <span class="input-unit">₹ INR</span>
+            </div>
+            <p class="form-hint">Ex-showroom price difference between EV and equivalent petrol model.</p>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button id="save-profile-btn" class="btn btn-primary btn-block">Save & Update Context</button>
+            <button id="reset-defaults-btn" class="btn btn-outline" title="Reset to default Nexon EV">Reset</button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Profile Overview & Synchronized Preview -->
+      <section class="results-container">
+        
+        <div class="card">
+          <h2 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Active Profile Intelligence Summary
+          </h2>
+          <p class="card-subtitle">Real-time parameters loaded into memory across Cost, Trip, and Range calculators.</p>
+
+          <div class="metrics-row">
+            <div class="metric-card highlight">
+              <span class="metric-label">ARAI Claimed Range</span>
+              <span id="preview-arai-range" class="metric-value text-success">465 km</span>
+              <span class="metric-subtext">Ideal laboratory test conditions</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Running Cost (EV)</span>
+              <span id="preview-ev-per-km" class="metric-value">₹1.13</span>
+              <span class="metric-subtext">Per kilometer at ₹7.00/kWh</span>
+            </div>
+
+            <div class="metric-card">
+              <span class="metric-label">Running Cost (Petrol)</span>
+              <span id="preview-petrol-per-km" class="metric-value text-danger">₹6.88</span>
+              <span class="metric-subtext">Per kilometer at ₹104.50/L</span>
+            </div>
+          </div>
+
+          <div class="callout callout-info" style="margin-top: 20px;">
+            <div class="callout-icon">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <strong>Instant Context Propagation:</strong> Any change saved here is immediately reflected in the 
+              <strong>Cost & Carbon</strong> savings charts, <strong>Trip Planner</strong> charging stops, and 
+              <strong>Real-World Range</strong> estimator without needing page reload.
+            </div>
+          </div>
+
+          <h3 style="font-size: 1rem; margin: 24px 0 12px; color: var(--primary);">Curated Indian EV Comparison Reference</h3>
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Battery</th>
+                  <th>ARAI Range</th>
+                  <th>Max DC</th>
+                  <th>EV Price</th>
+                  <th>Petrol Alternate</th>
+                </tr>
+              </thead>
+              <tbody id="vehicles-reference-table">
+                <!-- Populated dynamically from APEX_DATA -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const state = getAppState();
+
+      // Populate EV presets dropdown
+      const presetSelect = document.getElementById("vehicle-preset-select");
+      APEX_DATA.vehicles.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.id;
+        opt.textContent = `${v.name} (${v.batteryCapacity} kWh)`;
+        if (v.id === state.selectedVehicleId) opt.selected = true;
+        presetSelect.appendChild(opt);
+      });
+      const customOpt = document.createElement("option");
+      customOpt.value = "custom";
+      customOpt.textContent = "Custom EV Profile (Manual Input)";
+      if (state.selectedVehicleId === "custom") customOpt.selected = true;
+      presetSelect.appendChild(customOpt);
+
+      // Populate Tariff presets
+      const tariffSelect = document.getElementById("tariff-preset-select");
+      APEX_DATA.tariffs.forEach(t => {
+        const opt = document.createElement("option");
+        opt.value = t.rate;
+        opt.textContent = `${t.state} — ₹${t.rate.toFixed(2)}/kWh`;
+        if (Math.abs(t.rate - state.electricityTariff) < 0.05) opt.selected = true;
+        tariffSelect.appendChild(opt);
+      });
+
+      // Populate Petrol presets
+      const petrolSelect = document.getElementById("petrol-city-select");
+      APEX_DATA.fuelPrices.forEach(f => {
+        const opt = document.createElement("option");
+        opt.value = f.price;
+        opt.textContent = `${f.city} — ₹${f.price.toFixed(2)}/L`;
+        if (Math.abs(f.price - state.petrolPrice) < 0.05) opt.selected = true;
+        petrolSelect.appendChild(opt);
+      });
+
+      // Populate Reference Table
+      const tableBody = document.getElementById("vehicles-reference-table");
+      if (tableBody) {
+        tableBody.innerHTML = APEX_DATA.vehicles.map(v => `
+          <tr>
+            <td><strong>${v.name}</strong></td>
+            <td>${v.batteryCapacity} kWh</td>
+            <td>${v.araiRange} km</td>
+            <td>${v.maxDcChargeRate} kW</td>
+            <td>₹${(v.exShowroomPrice / 100000).toFixed(2)} Lakh</td>
+            <td>${v.petrolCounterpart.name}</td>
+          </tr>
+        `).join("");
+      }
+
+      // Populate inputs from current state
+      const nameInput = document.getElementById("custom-name-input");
+      const batteryInput = document.getElementById("battery-capacity-input");
+      const efficiencyInput = document.getElementById("ev-efficiency-input");
+      const maxDcInput = document.getElementById("max-dc-charge-input");
+      const tariffInput = document.getElementById("electricity-tariff-input");
+      const petrolInput = document.getElementById("petrol-price-input");
+      const petrolEffInput = document.getElementById("petrol-efficiency-input");
+      const priceDeltaInput = document.getElementById("price-delta-input");
+
+      nameInput.value = state.customVehicleName;
+      batteryInput.value = state.batteryCapacity;
+      efficiencyInput.value = state.evEfficiency;
+      maxDcInput.value = state.maxDcChargeRate;
+      tariffInput.value = state.electricityTariff;
+      petrolInput.value = state.petrolPrice;
+      petrolEffInput.value = state.petrolEfficiency;
+      priceDeltaInput.value = state.purchasePriceDifference;
+
+      function updatePreview() {
+        const cap = Number(batteryInput.value) || 40;
+        const eff = Number(efficiencyInput.value) || 6;
+        const tariff = Number(tariffInput.value) || 7;
+        const petrol = Number(petrolInput.value) || 104;
+        const pEff = Number(petrolEffInput.value) || 15;
+
+        const arai = Math.round(cap * eff);
+        const evPerKm = tariff / eff;
+        const petrolPerKm = petrol / pEff;
+
+        document.getElementById("preview-arai-range").textContent = `${arai} km`;
+        document.getElementById("preview-ev-per-km").textContent = `₹${evPerKm.toFixed(2)}`;
+        document.getElementById("preview-petrol-per-km").textContent = `₹${petrolPerKm.toFixed(2)}`;
+      }
+
+      updatePreview();
+
+      // Handle Preset Change
+      presetSelect.addEventListener("change", (e) => {
+        if (e.target.value === "custom") return;
+        const v = APEX_DATA.vehicles.find(item => item.id === e.target.value);
+        if (v) {
+          nameInput.value = v.name;
+          batteryInput.value = v.batteryCapacity;
+          efficiencyInput.value = v.ratedEfficiency;
+          maxDcInput.value = v.maxDcChargeRate;
+          petrolEffInput.value = v.petrolCounterpart.mileage;
+          priceDeltaInput.value = v.exShowroomPrice - v.petrolCounterpart.price;
+          updatePreview();
+        }
+      });
+
+      tariffSelect.addEventListener("change", (e) => {
+        tariffInput.value = Number(e.target.value).toFixed(2);
+        updatePreview();
+      });
+
+      petrolSelect.addEventListener("change", (e) => {
+        petrolInput.value = Number(e.target.value).toFixed(2);
+        updatePreview();
+      });
+
+      [batteryInput, efficiencyInput, tariffInput, petrolInput, petrolEffInput].forEach(inp => {
+        inp.addEventListener("input", updatePreview);
+      });
+
+      // Save Action
+      document.getElementById("save-profile-btn").addEventListener("click", () => {
+        const nextState = {
+          selectedVehicleId: presetSelect.value,
+          customVehicleName: nameInput.value,
+          batteryCapacity: Number(batteryInput.value),
+          evEfficiency: Number(efficiencyInput.value),
+          maxDcChargeRate: Number(maxDcInput.value),
+          electricityTariff: Number(tariffInput.value),
+          petrolPrice: Number(petrolInput.value),
+          petrolEfficiency: Number(petrolEffInput.value),
+          purchasePriceDifference: Number(priceDeltaInput.value)
+        };
+        updateAppState(nextState);
+        showToast("Profile settings saved and synced across all modules!");
+      });
+
+      // Reset Action
+      document.getElementById("reset-defaults-btn").addEventListener("click", () => {
+        if (confirm("Reset profile settings to default Tata Nexon EV?")) {
+          resetAppState();
+          location.reload();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

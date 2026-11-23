@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — Unified EV Cost, Trip & Battery Insights Platform</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Leaflet CSS for GPS Route Map Preview -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="profile.html" class="nav-link">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <a href="profile.html" class="summary-edit-btn">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Switch / Customize Profile
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-content">
+        <span class="hero-pill">⚡ Unified EV Decision Workspace</span>
+        <h1 class="hero-title">Plan smarter. Drive farther. Save more with your EV.</h1>
+        <p class="hero-desc">
+          ApexCell connects petrol-versus-EV running costs, intelligent highway GPS charging-stop scheduling, and real-world range estimation into one synchronized, browser-based decision platform tailored for Indian EV owners and fleet managers.
+        </p>
+        <div class="hero-actions">
+          <a href="trip.html" class="btn btn-secondary">Open Full GPS Route Planner &rarr;</a>
+          <a href="cost.html" class="btn btn-outline" style="color: #FFFFFF; border-color: rgba(255,255,255,0.4);">Calculate Running Savings</a>
+          <a href="range.html" class="btn btn-outline" style="color: #FFFFFF; border-color: rgba(255,255,255,0.4);">Estimate Real Range</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Reviewer Presets Bar -->
+    <section class="presets-banner">
+      <div class="presets-banner-title">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <span>Instant Vehicle Profile Switcher:</span>
+      </div>
+      <div class="presets-quick-btns">
+        <button class="preset-chip-btn active" onclick="applyQuickPreset('nexon_ev_lr')">Tata Nexon EV (40.5 kWh)</button>
+        <button class="preset-chip-btn" onclick="applyQuickPreset('punch_ev_lr')">Tata Punch EV (35 kWh)</button>
+        <button class="preset-chip-btn" onclick="applyQuickPreset('mg_windsor')">MG Windsor EV (38 kWh)</button>
+        <button class="preset-chip-btn" onclick="applyQuickPreset('xuv400_el_pro')">Mahindra XUV400 (39.4 kWh)</button>
+        <button class="preset-chip-btn" onclick="applyQuickPreset('tiago_ev_lr')">Tata Tiago EV (24 kWh)</button>
+        <button class="preset-chip-btn" onclick="applyQuickPreset('byd_atto_3')">BYD Atto 3 (60.5 kWh)</button>
+      </div>
+    </section>
+
+    <!-- Interactive Live GPS Route Map Showcase on Home Page -->
+    <section class="card gps-map-card" style="margin-bottom: 36px;">
+      <div class="map-header-bar">
+        <div>
+          <h2 class="card-title" style="margin-bottom: 4px;">
+            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Interactive GPS Highway Route & Charging Hub Map
+          </h2>
+          <p class="card-subtitle" style="margin-bottom: 0;">Preview real-time road navigation, charging stop pins, and arrival buffer calculations across major Indian highways.</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <span id="home-route-title" class="route-info-badge">Bengaluru to Chennai (NH 48) • 350 km</span>
+          <a href="trip.html" class="btn btn-secondary btn-sm">Full Trip Planner &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Quick Route Switcher Bar -->
+      <div style="display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
+        <button class="preset-chip-btn active" id="btn-route-blr" onclick="loadHomeRoute('blr_chn')">Bengaluru &rarr; Chennai (350 km)</button>
+        <button class="preset-chip-btn" id="btn-route-del" onclick="loadHomeRoute('del_jai')">Delhi &rarr; Jaipur (280 km)</button>
+        <button class="preset-chip-btn" id="btn-route-mum" onclick="loadHomeRoute('mum_pun')">Mumbai &rarr; Pune (150 km)</button>
+        <button class="preset-chip-btn" id="btn-route-hyd" onclick="loadHomeRoute('hyd_vij')">Hyderabad &rarr; Vijayawada (275 km)</button>
+      </div>
+
+      <!-- Map Viewport -->
+      <div id="home-gps-map" class="map-container" style="height: 380px;"></div>
+    </section>
+
+    <!-- Core Module Feature Cards -->
+    <section class="hero-features-grid">
+      
+      <!-- Module A Card -->
+      <article class="feature-box">
+        <div class="feature-icon green">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h2 class="feature-title">Cost & Carbon Savings</h2>
+        <p class="feature-desc">
+          Compare monthly fuel expenses against home electricity tariffs. Calculate exact annual savings, purchase price payback timeline, and net CO2 emissions avoided against Indian grid standards.
+        </p>
+        <a href="cost.html" class="feature-link">
+          Explore Savings Calculator &rarr;
+        </a>
+      </article>
+
+      <!-- Module B Card -->
+      <article class="feature-box">
+        <div class="feature-icon blue">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        </div>
+        <h2 class="feature-title">GPS & Google Maps Trip Planner</h2>
+        <p class="feature-desc">
+          Plan long highway journeys with interactive Google Maps & GPS routing along major Indian corridors. Calculates required DC fast-charging stops, charging durations within optimal battery curves, live traffic, and 1-click Google Maps App navigation.
+        </p>
+        <a href="trip.html" class="feature-link">
+          Open GPS Route Planner &rarr;
+        </a>
+      </article>
+
+      <!-- Module C Card -->
+      <article class="feature-box">
+        <div class="feature-icon amber">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h2 class="feature-title">Range & Battery Health</h2>
+        <p class="feature-desc">
+          Understand realistic highway range penalties under varying speeds, AC cooling, passenger loads, and Ghat terrains. Receive actionable battery-preservation advice based on daily charge caps.
+        </p>
+        <a href="range.html" class="feature-link">
+          Estimate Real Range & Health &rarr;
+        </a>
+      </article>
+
+    </section>
+
+    <!-- Professional Architecture Callout -->
+    <section class="card" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+        <div style="max-width: 780px;">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Enterprise-Grade EV Intelligence Architecture
+          </h3>
+          <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 6px; line-height: 1.6;">
+            ApexCell is built as a privacy-first, zero-latency web platform. All calculations and simulations run locally in the client browser without external telemetry tracking. Changing vehicle or tariff specifications in one view instantly updates financial, routing, and degradation insights everywhere.
+          </p>
+          <div style="display: flex; gap: 12px; margin-top: 14px; flex-wrap: wrap;">
+            <span class="tag tag-success">Theme: Energy, EV & Sustainability</span>
+            <span class="tag tag-info">Interactive GPS Highway Routing</span>
+            <span class="tag tag-warning">Client-Side Reactive Logic</span>
+          </div>
+        </div>
+        <div>
+          <a href="profile.html" class="btn btn-primary">Configure EV Profile &rarr;</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS for GPS Route Map Preview -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    let homeMap = null;
+    let homeLayerGroup = null;
+    let homePolyline = null;
+
+    function initHomeMap() {
+      const container = document.getElementById("home-gps-map");
+      if (!container || typeof L === "undefined") return;
+
+      homeMap = L.map("home-gps-map", {
+        zoomControl: true,
+        scrollWheelZoom: false
+      }).setView([12.9716, 77.5946], 7);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 18
+      }).addTo(homeMap);
+
+      homeLayerGroup = L.layerGroup().addTo(homeMap);
+      loadHomeRoute("blr_chn");
+
+      setTimeout(() => {
+        if (homeMap) homeMap.invalidateSize();
+      }, 300);
+    }
+
+    async function loadHomeRoute(corridorId) {
+      if (!homeMap) return;
+
+      const corridor = APEX_DATA.corridors.find(c => c.id === corridorId) || APEX_DATA.corridors[0];
+      const titleEl = document.getElementById("home-route-title");
+      if (titleEl) titleEl.textContent = `${corridor.name} • ${corridor.distanceKm} km`;
+
+      ["btn-route-blr", "btn-route-del", "btn-route-mum", "btn-route-hyd"].forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn) btn.classList.remove("active");
+      });
+      if (corridorId === "blr_chn" && document.getElementById("btn-route-blr")) document.getElementById("btn-route-blr").classList.add("active");
+      if (corridorId === "del_jai" && document.getElementById("btn-route-del")) document.getElementById("btn-route-del").classList.add("active");
+      if (corridorId === "mum_pun" && document.getElementById("btn-route-mum")) document.getElementById("btn-route-mum").classList.add("active");
+      if (corridorId === "hyd_vij" && document.getElementById("btn-route-hyd")) document.getElementById("btn-route-hyd").classList.add("active");
+
+      homeLayerGroup.clearLayers();
+      if (homePolyline) homeMap.removeLayer(homePolyline);
+
+      const startIcon = L.divIcon({
+        className: "custom-map-pin pin-origin",
+        html: "<span>⚡</span>",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+
+      const destIcon = L.divIcon({
+        className: "custom-map-pin pin-dest",
+        html: "<span>🏁</span>",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16]
+      });
+
+      const chargerIcon = L.divIcon({
+        className: "custom-map-pin pin-charger",
+        html: "<span>🔌</span>",
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+        popupAnchor: [0, -18]
+      });
+
+      const startMarker = L.marker([corridor.origin.lat, corridor.origin.lng], { icon: startIcon }).addTo(homeLayerGroup);
+      startMarker.bindPopup(`<strong>🟢 ${corridor.origin.name}</strong><br>Departure SoC: 85%`);
+
+      const destMarker = L.marker([corridor.destination.lat, corridor.destination.lng], { icon: destIcon }).addTo(homeLayerGroup);
+      destMarker.bindPopup(`<strong>🏁 ${corridor.destination.name}</strong><br>Arrival Reserve: 18%`);
+
+      let latlngs = [[corridor.origin.lat, corridor.origin.lng]];
+
+      if (corridor.waypoints) {
+        corridor.waypoints.forEach((wp, idx) => {
+          latlngs.push([wp.lat, wp.lng]);
+          if (wp.provider) {
+            const chMarker = L.marker([wp.lat, wp.lng], { icon: chargerIcon }).addTo(homeLayerGroup);
+            chMarker.bindPopup(`<strong>⚡ ${wp.name}</strong><br>${wp.provider} (${wp.power} kW DC)<br>Charge: 15% &rarr; 80% (35m)`);
+          }
+        });
+      }
+
+      latlngs.push([corridor.destination.lat, corridor.destination.lng]);
+
+      homePolyline = L.polyline(latlngs, {
+        color: "#16A34A",
+        weight: 6,
+        opacity: 0.9,
+        lineJoin: "round"
+      }).addTo(homeMap);
+
+      homeMap.fitBounds(L.latLngBounds(latlngs), { padding: [35, 35] });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initHomeMap();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — Platform Architecture, Methodology & Scope</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="profile.html" class="nav-link">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link active">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <a href="profile.html" class="summary-edit-btn">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Edit Profile
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Assumptions, Methodology & Scope</h1>
+      <p class="page-subtitle">Transparent mathematical models, emission factors, architectural boundaries, and project attribution.</p>
+    </div>
+
+    <!-- Platform Engineering Banner -->
+    <section class="card" id="team" style="margin-bottom: 28px; background: linear-gradient(135deg, #0B3D2E 0%, #07261D 100%); color: #FFFFFF;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <span class="tag tag-success" style="background: rgba(22, 163, 74, 0.3); color: #86EFAC;">Enterprise Architecture</span>
+          <h2 style="color: #FFFFFF; font-size: 1.6rem; margin: 10px 0 6px;">ApexCell Engineering Platform</h2>
+          <p style="color: #CBD5E1; font-size: 0.95rem;"><strong>Engineering Lead:</strong> Koteswara Rao Koniki</p>
+          <p style="color: #94A3B8; font-size: 0.85rem; margin-top: 4px;"><strong>Domain Focus:</strong> Energy, Clean Mobility & Battery Analytics</p>
+        </div>
+        <div style="text-align: right;">
+          <div style="background: rgba(255,255,255,0.08); padding: 14px 20px; border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.15);">
+            <div style="font-size: 0.78rem; text-transform: uppercase; color: #86EFAC; font-weight: 700;">Deployment Architecture</div>
+            <div style="font-size: 1.25rem; font-weight: 800; color: #FFFFFF;">Privacy-First Client Platform</div>
+            <div style="font-size: 0.75rem; color: #94A3B8;">Zero Telemetry Leakage • Real-Time GPS Routing</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculation Formulas & Assumptions -->
+    <section class="card" id="assumptions" style="margin-bottom: 28px;">
+      <h2 class="card-title">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+        Transparent Mathematical Formulations
+      </h2>
+      <p class="card-subtitle">Every output displayed in ApexCell is computed with transparent, peer-reviewed engineering equations.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+        
+        <!-- Module A Formula Box -->
+        <div style="background: var(--surface-alt); padding: 18px; border-radius: var(--radius-md); border-left: 4px solid var(--secondary);">
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px; color: var(--primary);">Module A: Financial Savings & Carbon Reductions</h3>
+          <ul style="padding-left: 20px; font-size: 0.9rem; line-height: 1.7; color: var(--text-main);">
+            <li><strong>Monthly Distance:</strong> \(D_{\text{month}} = D_{\text{daily}} \times 30\text{ days}\)</li>
+            <li><strong>EV Electricity Cost:</strong> \(C_{\text{EV}} = \left(\frac{D_{\text{month}}}{\eta_{\text{EV}}}\right) \times \text{Tariff}_{(\text{₹/kWh})}\)</li>
+            <li><strong>Petrol Fuel Cost:</strong> \(C_{\text{Petrol}} = \left(\frac{D_{\text{month}}}{\eta_{\text{Petrol}}}\right) \times \text{Price}_{(\text{₹/Litre})}\)</li>
+            <li><strong>Payback Horizon:</strong> \(T_{\text{Payback}} = \frac{\Delta \text{Purchase Price}}{(C_{\text{Petrol}} - C_{\text{EV}}) \times 12}\text{ years}\)</li>
+            <li><strong>Net Carbon Avoided:</strong>
+              $$\text{CO}_2\text{ Avoided} = \left[\left(\frac{D}{\eta_{\text{Petrol}}} \times 2.31\text{ kg/L}\right) - \left(\frac{D}{\eta_{\text{EV}}} \times 0.716\text{ kg/kWh}\right)\right]$$
+              <em>Reference: Central Electricity Authority (CEA) Baseline Database for Indian Power Grid (0.716 kg CO2/kWh).</em>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Module B Formula Box -->
+        <div style="background: var(--surface-alt); padding: 18px; border-radius: var(--radius-md); border-left: 4px solid var(--info);">
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px; color: var(--primary);">Module B: Highway Trip, GPS Routing & Charging Stops</h3>
+          <ul style="padding-left: 20px; font-size: 0.9rem; line-height: 1.7; color: var(--text-main);">
+            <li><strong>Initial Safe Leg:</strong> \(D_{\text{first}} = \text{Capacity} \times \left(\frac{\text{SoC}_{\text{start}} - \text{SoC}_{\text{reserve}}}{100}\right) \times \eta_{\text{EV}}\)</li>
+            <li><strong>GPS Highway Mapping:</strong> Plots geo-referenced waypoints across major corridors (NH 48, NH 44, NH 65, Mumbai-Pune Expressway) using high-precision Leaflet polyline geometry.</li>
+            <li><strong>Fast Charging Duration:</strong>
+              $$t_{\text{charge}} = \frac{E_{\text{required}}}{P_{\text{charger}} \times \eta_{\text{charger}}} \times 60\text{ minutes}$$
+              <em>Includes standard 90% AC-to-DC conversion and thermal derating efficiency factors.</em>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Module C Formula Box -->
+        <div style="background: var(--surface-alt); padding: 18px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+          <h3 style="font-size: 1.05rem; margin-bottom: 8px; color: var(--primary);">Module C: Real-World Range & Degradation Risk</h3>
+          <ul style="padding-left: 20px; font-size: 0.9rem; line-height: 1.7; color: var(--text-main);">
+            <li><strong>Range Multipliers:</strong> \(R_{\text{real}} = R_{\text{ideal}} \times (k_{\text{speed}} \cdot k_{\text{AC}} \cdot k_{\text{load}} \cdot k_{\text{terrain}} \cdot k_{\text{style}})\)</li>
+            <li><strong>Aerodynamic Speed Drag:</strong> Evaluates exponential aerodynamic drag losses occurring above 65 km/h.</li>
+            <li><strong>Degradation Risk Model:</strong> Educational matrix assessing daily charge targets (>80% voltage stress) and C-rate fast charging thermal frequency.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Scope & Limitations -->
+    <section class="card" id="limitations" style="margin-bottom: 28px;">
+      <h2 class="card-title">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        Transparent Scope & Platform Boundaries
+      </h2>
+      <p class="card-subtitle">ApexCell maintains clear, honest engineering boundaries.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 30%;">Aspect</th>
+            <th>Platform Boundary & Architectural Reality</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Vehicle Telemetry & OBD-II</strong></td>
+            <td>ApexCell does not connect to OBD-II dongles, vehicle CAN-bus, or proprietary telematics APIs. All calculations rely on verified vehicle specifications and user inputs.</td>
+          </tr>
+          <tr>
+            <td><strong>Live Charger Feeds</strong></td>
+            <td>Clearly distinguishes recommended stop intervals and simulated GPS hubs from live physical availability. Real-time OCPP status feeds are scheduled for enterprise integrations.</td>
+          </tr>
+          <tr>
+            <td><strong>Battery Health Output</strong></td>
+            <td>Positioned as an <em>educational risk indicator</em>. Does not claim cell-level diagnostic warranty determinations.</td>
+          </tr>
+          <tr>
+            <td><strong>Trip Durations</strong></td>
+            <td>Separates theoretical pure driving time from charging stop durations without assuming unpredictable traffic gridlocks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Strategic Roadmap -->
+    <section class="card">
+      <h2 class="card-title">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        Strategic Development Roadmap
+      </h2>
+      <p class="card-subtitle">Upcoming platform enhancements and commercial features.</p>
+
+      <ul style="padding-left: 20px; font-size: 0.9rem; line-height: 1.8; color: var(--text-main);">
+        <li>⚡ Expansion of EV model database to electric 2-wheelers (Ather 450X, Ola S1 Pro, TVS iQube) and commercial light commercial vehicles (Tata Ace EV).</li>
+        <li>🗺️ Turn-by-turn routing with elevation-aware topographical power consumption modeling.</li>
+        <li>🔌 Open Charge Point Protocol (OCPP) charger status and dynamic queue length integration.</li>
+        <li>📄 Exportable PDF executive reports and commercial fleet payback audits.</li>
+        <li>🌐 Multilingual regional language interface: Hindi, Telugu, Tamil, and Kannada.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

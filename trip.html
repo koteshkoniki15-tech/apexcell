@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — Intelligent EV Trip & Highway Charging Planner</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <!-- Leaflet CSS for Live GPS Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="profile.html" class="nav-link">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link active">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <a href="profile.html" class="summary-edit-btn">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Edit Profile
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Highway GPS Route & Fast-Charging Planner</h1>
+      <p class="page-subtitle">Real-time GPS highway road routing, automated DC fast charger stop scheduling, and battery buffer management across India.</p>
+    </div>
+
+    <!-- City-to-City Route Planner -->
+    <div class="gps-route-search-bar" style="flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.04em;">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Plan Your Route — Select Any Two Cities
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <div class="gps-search-input-group">
+          <label for="route-origin-select">From:</label>
+          <select id="route-origin-select" class="gps-select">
+            <!-- Populated dynamically from INDIAN_CITIES by JS -->
+          </select>
+        </div>
+
+        <button type="button" class="gps-swap-btn" onclick="swapCities()" title="Swap origin and destination" style="background:#FFFFFF; border:1px solid var(--border); border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem; flex-shrink:0;" >⇄</button>
+
+        <div class="gps-search-input-group">
+          <label for="route-dest-select">To:</label>
+          <select id="route-dest-select" class="gps-select">
+            <!-- Populated dynamically from INDIAN_CITIES by JS -->
+          </select>
+        </div>
+
+        <button type="button" class="gps-location-btn" onclick="requestLiveGps()">
+          📍 Use My GPS
+        </button>
+
+        <button type="button" class="btn btn-primary" style="padding: 10px 22px; font-weight: 700;" onclick="calculateCityRoute()">
+          🗺️ Plot Route
+        </button>
+      </div>
+    </div>
+
+    <!-- Popular EV Corridors Quick Picks -->
+    <section class="presets-banner" style="margin-bottom: 24px;">
+      <div class="presets-banner-title">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        <span>Quick Picks — Popular EV Corridors:</span>
+      </div>
+      <div class="presets-quick-btns">
+        <button class="preset-chip-btn corridor-btn active" data-corridor="blr_chn" onclick="selectCorridor('blr_chn')">Bengaluru &rarr; Chennai (350 km)</button>
+        <button class="preset-chip-btn corridor-btn" data-corridor="del_jai" onclick="selectCorridor('del_jai')">Delhi &rarr; Jaipur (280 km)</button>
+        <button class="preset-chip-btn corridor-btn" data-corridor="mum_pun" onclick="selectCorridor('mum_pun')">Mumbai &rarr; Pune (150 km)</button>
+        <button class="preset-chip-btn corridor-btn" data-corridor="hyd_vij" onclick="selectCorridor('hyd_vij')">Hyderabad &rarr; Vijayawada (275 km)</button>
+        <button class="preset-chip-btn corridor-btn" data-corridor="del_chd" onclick="selectCorridor('del_chd')">Delhi &rarr; Chandigarh (250 km)</button>
+      </div>
+    </section>
+
+    <div class="module-grid">
+      
+      <!-- Input Panel (40%) -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Journey Parameters
+        </h2>
+        <p class="card-subtitle">Set planned highway distance, battery state, and charger preferences.</p>
+
+        <!-- Trip Distance -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="trip-distance-slider" class="form-label">Total Highway Distance</label>
+            <span id="trip-distance-badge" class="slider-val-badge">350 km</span>
+          </div>
+          <input type="range" id="trip-distance-slider" min="50" max="800" step="10" value="350">
+          <div class="range-marks">
+            <span>50 km</span>
+            <span>250 km</span>
+            <span>500 km</span>
+            <span>800 km</span>
+          </div>
+          <div class="input-with-unit" style="margin-top: 10px;">
+            <input type="number" id="trip-distance-input" class="form-control" min="20" max="1500" value="350">
+            <span class="input-unit">km</span>
+          </div>
+          <p class="form-hint">Adjust distance freely or click a highway corridor above.</p>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 18px 0;">
+
+        <!-- Starting SoC Slider -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="start-soc-slider" class="form-label">Departure Battery Level (SoC)</label>
+            <span id="start-soc-val" class="slider-val-badge">85%</span>
+          </div>
+          <input type="range" id="start-soc-slider" min="20" max="100" step="5" value="85">
+          <p class="form-hint">Departure charge level at start of journey.</p>
+        </div>
+
+        <!-- Target Arrival Reserve -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="reserve-soc-slider" class="form-label">Safety Buffer Reserve</label>
+            <span id="reserve-soc-val" class="slider-val-badge" style="color: var(--accent); background: var(--accent-light);">15%</span>
+          </div>
+          <input type="range" id="reserve-soc-slider" min="5" max="30" step="1" value="15">
+          <p class="form-hint">Safety buffer SoC to avoid stranding due to traffic or headwinds.</p>
+        </div>
+
+        <!-- Highway Charger Power -->
+        <div class="form-group">
+          <label for="charger-power-select" class="form-label">Highway DC Fast Charger Power</label>
+          <select id="charger-power-select" class="form-control">
+            <option value="30">30 kW DC (Compact Fast Charger)</option>
+            <option value="50" selected>50 kW DC (Standard Indian Highway Spec)</option>
+            <option value="60">60 kW DC (Dual-Gun Highway Hub)</option>
+            <option value="120">120 kW DC (Ultra Fast Hub)</option>
+          </select>
+          <p class="form-hint">Actual rate will be bounded by your vehicle's peak acceptance.</p>
+        </div>
+
+        <!-- Public Fast Charging Rate -->
+        <div class="form-group">
+          <label for="charging-rate-input" class="form-label">Public Charging Tariff Rate</label>
+          <div class="input-with-unit">
+            <input type="number" id="charging-rate-input" class="form-control" step="0.5" value="19.50">
+            <span class="input-unit">₹/kWh</span>
+          </div>
+          <p class="form-hint">Tata Power EZ Charge, Jio-bp, or Statiq fast network rate.</p>
+        </div>
+
+        <!-- Cruise Speed -->
+        <div class="form-group">
+          <label for="highway-speed-input" class="form-label">Average Highway Driving Speed</label>
+          <div class="input-with-unit">
+            <input type="number" id="highway-speed-input" class="form-control" min="50" max="120" step="5" value="75">
+            <span class="input-unit">km/h</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Result Dashboard (60%) -->
+      <section class="results-container">
+        
+        <!-- Headline Metrics Row -->
+        <div class="metrics-row">
+          <div class="metric-card highlight info">
+            <span class="metric-label">Charging Stops</span>
+            <span id="trip-stops-val" class="metric-value" style="color: #0284C7;">1 Stop</span>
+            <span class="metric-subtext">Optimized for safety & speed</span>
+          </div>
+
+          <div class="metric-card warning">
+            <span class="metric-label">Charging Time</span>
+            <span id="trip-charge-time-val" class="metric-value text-accent">38 min</span>
+            <span class="metric-subtext">In 15% &rarr; 80% optimal window</span>
+          </div>
+
+          <div class="metric-card">
+            <span class="metric-label">Total Trip Duration</span>
+            <span id="trip-duration-val" class="metric-value">5h 26m</span>
+            <span id="trip-driving-time-sub" class="metric-subtext">Driving: 4h 48m + Charging: 38m</span>
+          </div>
+
+          <div class="metric-card success">
+            <span class="metric-label">Trip Charging Cost</span>
+            <span id="trip-cost-val" class="metric-value text-success">₹520</span>
+            <span class="metric-subtext">Public DC fast charging cost</span>
+          </div>
+        </div>
+
+        <!-- Warning Callout if needed -->
+        <div id="trip-warning-box" class="callout callout-warning" style="display: none;">
+          <!-- Dynamically populated if trip is infeasible with current start SoC -->
+        </div>
+
+        <!-- Interactive GPS Map Card -->
+        <div class="card gps-map-card">
+          <div class="map-header-bar">
+            <div>
+              <h3 class="card-title" style="margin-bottom: 2px;">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                Live GPS Highway Route & Charging Hub Map
+              </h3>
+              <p class="card-subtitle" style="margin-bottom: 0;">Interactive road navigation, actual highway geometry, and charging hub markers.</p>
+            </div>
+            <span id="active-route-badge" class="route-info-badge">
+              Bengaluru to Chennai (NH 48) • 350 km Road
+            </span>
+          </div>
+
+          <!-- Map Toolbar -->
+          <div class="map-tools-toolbar">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Route Map</span>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Interactive highway preview with charging stops</span>
+            </div>
+            <button type="button" id="btn-open-gmaps-app" class="gmaps-nav-btn" onclick="openInGoogleMaps()" title="Open full driving route in Google Maps — no API key needed">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              Open in Google Maps &rarr;
+            </button>
+          </div>
+
+          <!-- Leaflet OpenStreetMap Canvas -->
+          <div id="trip-map" class="map-container"></div>
+        </div>
+
+        <!-- Stop Timeline Card -->
+        <div class="card">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Planned Journey & Charging Stops Timeline
+          </h3>
+          <p class="card-subtitle">Scheduled stop locations, arrival SoC, charge times, and buffer reserve.</p>
+
+          <div id="trip-timeline-container" class="trip-timeline">
+            <!-- Dynamically populated by js/trip.js -->
+          </div>
+
+          <div class="callout callout-info">
+            <div class="callout-icon">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <strong>Why Stop at 80%?</strong> Lithium-ion EV batteries charge rapidly up to 80% SoC. Beyond 80%, the Battery Management System (BMS) drastically tapers charging power to prevent cell overheating. Unplugging at 80% saves ~25 minutes and reduces queue congestion.
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS for GPS Map -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/trip.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      initTripPage();
+    });
+  </script>
+</body>
+</html>

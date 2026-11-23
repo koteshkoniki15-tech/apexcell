@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — Module C: Real-World Range & Battery Health</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="profile.html" class="nav-link">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link active">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <a href="profile.html" class="summary-edit-btn">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Edit Profile
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Module C: Real-World Range & Battery Health</h1>
+      <p class="page-subtitle">Understand how speed, AC, passenger load, terrain, and charging habits affect your real-world range and long-term battery life.</p>
+    </div>
+
+    <div class="module-grid">
+      
+      <!-- Input Panel (40%) -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Driving Conditions
+        </h2>
+        <p class="card-subtitle">Adjust real-world environmental factors.</p>
+
+        <!-- Speed Slider -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="driving-speed-slider" class="form-label">Average Driving Speed</label>
+            <span id="driving-speed-badge" class="slider-val-badge">65 km/h</span>
+          </div>
+          <input type="range" id="driving-speed-slider" min="40" max="120" step="5" value="65">
+          <div class="range-marks">
+            <span>40 km/h (City)</span>
+            <span>80 km/h (Expressway)</span>
+            <span>120 km/h</span>
+          </div>
+          <p class="form-hint">Aerodynamic drag rises with square of velocity; >80 km/h increases consumption exponentially.</p>
+        </div>
+
+        <!-- AC / Climate Usage -->
+        <div class="form-group">
+          <label class="form-label">Air Conditioning / Climate Load</label>
+          <div class="btn-toggle-group">
+            <input type="radio" id="ac-off" name="acUsage" value="off">
+            <label for="ac-off">Off</label>
+
+            <input type="radio" id="ac-low" name="acUsage" value="low">
+            <label for="ac-low">Low</label>
+
+            <input type="radio" id="ac-med" name="acUsage" value="medium" checked>
+            <label for="ac-med">Med (22°C)</label>
+
+            <input type="radio" id="ac-high" name="acUsage" value="high">
+            <label for="ac-high">High (Peak Heat)</label>
+          </div>
+          <p class="form-hint">Indian summer ambient temperatures (~40°C) add 1.5–2.5 kW auxiliary AC load.</p>
+        </div>
+
+        <!-- Passenger / Cargo Load -->
+        <div class="form-group">
+          <label class="form-label">Passenger & Luggage Payload</label>
+          <div class="btn-toggle-group">
+            <input type="radio" id="load-light" name="passengerLoad" value="light">
+            <label for="load-light">Solo Driver</label>
+
+            <input type="radio" id="load-med" name="passengerLoad" value="medium" checked>
+            <label for="load-med">2-3 People</label>
+
+            <input type="radio" id="load-heavy" name="passengerLoad" value="heavy">
+            <label for="load-heavy">Full Load + Boot</label>
+          </div>
+        </div>
+
+        <!-- Terrain -->
+        <div class="form-group">
+          <label class="form-label">Route Terrain</label>
+          <div class="btn-toggle-group">
+            <input type="radio" id="terr-flat" name="terrainType" value="flat">
+            <label for="terr-flat">Flat Plains</label>
+
+            <input type="radio" id="terr-mixed" name="terrainType" value="mixed" checked>
+            <label for="terr-mixed">Rolling / Mixed</label>
+
+            <input type="radio" id="terr-hilly" name="terrainType" value="hilly">
+            <label for="terr-hilly">Hilly / Ghats</label>
+          </div>
+        </div>
+
+        <!-- Driving Style -->
+        <div class="form-group">
+          <label class="form-label">Driving Style & Regeneration</label>
+          <div class="btn-toggle-group">
+            <input type="radio" id="style-eco" name="drivingStyle" value="eco">
+            <label for="style-eco">Eco / High Regen</label>
+
+            <input type="radio" id="style-norm" name="drivingStyle" value="normal" checked>
+            <label for="style-norm">Normal</label>
+
+            <input type="radio" id="style-sport" name="drivingStyle" value="spirited">
+            <label for="style-sport">Spirited / Fast</label>
+          </div>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 20px 0;">
+
+        <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;">Battery Care Routine</h3>
+
+        <!-- Daily Charge Cap -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="charge-cap-slider" class="form-label">Daily AC Charge Target (Cap)</label>
+            <span id="charge-cap-badge" class="slider-val-badge">80%</span>
+          </div>
+          <input type="range" id="charge-cap-slider" min="60" max="100" step="5" value="80">
+          <div class="range-marks">
+            <span>60%</span>
+            <span>80% (Recommended)</span>
+            <span>100% (Highway Only)</span>
+          </div>
+          <p class="form-hint">Capping daily home charging at 80% protects NMC / LFP cathode crystal lattice from high voltage stress.</p>
+        </div>
+
+        <!-- Fast Charging Frequency -->
+        <div class="form-group">
+          <label for="fast-charge-select" class="form-label">DC Fast-Charging Frequency</label>
+          <select id="fast-charge-select" class="form-control">
+            <option value="never">Rarely / Never (&lt; 1 time/month)</option>
+            <option value="occasional" selected>Occasional (1–2 times/month on highway trips)</option>
+            <option value="frequent">Frequent (1–2 times/week)</option>
+            <option value="daily">Daily (> 3 times/week commercial usage)</option>
+          </select>
+          <p class="form-hint">High C-rate DC fast charging generates internal cell heat.</p>
+        </div>
+
+      </section>
+
+      <!-- Result Dashboard (60%) -->
+      <section class="results-container">
+        
+        <!-- Range Gauge Card -->
+        <div class="card">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Estimated Real-World Range
+          </h3>
+          <p class="card-subtitle">Adjusted from manufacturer lab tests to your exact driving conditions.</p>
+
+          <div class="gauge-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 200 120">
+              <!-- Background Arc -->
+              <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#E2E8F0" stroke-width="16" stroke-linecap="round"/>
+              <!-- Active Arc -->
+              <path id="range-gauge-arc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#16A34A" stroke-width="16" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="60" style="transition: stroke-dashoffset 0.5s ease-out;"/>
+            </svg>
+            <div id="real-world-range-val" class="gauge-val-big num-tabular">285 km</div>
+            <div class="gauge-unit">Usable Highway / City Range</div>
+            <div id="ideal-range-sub" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">ARAI Claimed: 465 km</div>
+          </div>
+
+          <!-- Factor Impact Breakdown -->
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); margin: 18px 0 8px;">Condition Impact Breakdown</h4>
+          <div class="range-loss-breakdown">
+            <div class="breakdown-row">
+              <span>Speed Penalty (>60 km/h Drag)</span>
+              <span id="loss-speed-val" class="breakdown-val num-tabular">-32 km</span>
+            </div>
+            <div class="breakdown-row">
+              <span>AC / Climate Control Load</span>
+              <span id="loss-ac-val" class="breakdown-val num-tabular">-25 km</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Payload & Occupancy Weight</span>
+              <span id="loss-load-val" class="breakdown-val num-tabular">-12 km</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Road Incline / Terrain Loss</span>
+              <span id="loss-terrain-val" class="breakdown-val num-tabular">-15 km</span>
+            </div>
+            <div class="breakdown-row">
+              <span>Driving Style & Regen Factor</span>
+              <span id="loss-style-val" class="breakdown-val num-tabular">0 km</span>
+            </div>
+            <div class="breakdown-row" style="background: #F0FDF4; font-weight: 600;">
+              <span>Net Adjusted Operational Efficiency</span>
+              <span id="adjusted-eff-val" class="breakdown-val positive num-tabular">4.82 km/kWh</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Battery Health & Degradation Risk Card -->
+        <div class="card">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            Battery Health & Degradation Risk Indicator
+          </h3>
+          <p class="card-subtitle">Transparent educational assessment of your daily charging profile.</p>
+
+          <div id="battery-health-card" class="health-badge-card risk-low">
+            <div class="health-icon-box">
+              <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="health-text">
+              <h4 id="health-risk-title">Low Degradation Risk</h4>
+              <p id="health-risk-desc">Your daily charging habits protect cell life and minimize anode stress.</p>
+            </div>
+          </div>
+
+          <h4 style="font-size: 0.92rem; font-weight: 700; color: var(--text-main); margin: 20px 0 8px;">Actionable EV Care Advice</h4>
+          <ul class="advice-list">
+            <li class="advice-item">
+              <svg fill="none" stroke="#16A34A" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <div><strong>The 20%–80% Rule:</strong> Keep everyday battery SoC between 20% and 80%. This prevents lithium plating and thermal strain.</div>
+            </li>
+            <li class="advice-item">
+              <svg fill="none" stroke="#16A34A" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <div><strong>Avoid Parking at 100%:</strong> Charge to 100% only immediately before departing on long highway trips; do not leave parked at 100% under direct Indian sun.</div>
+            </li>
+            <li class="advice-item">
+              <svg fill="none" stroke="#16A34A" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <div><strong>LFP vs NMC Chemistry:</strong> Many Indian EVs (e.g. Tata Nexon EV, BYD) use LFP (Lithium Iron Phosphate) chemistry which benefits from an occasional 100% charge every 1–2 weeks for BMS cell balancing.</div>
+            </li>
+          </ul>
+
+          <div class="callout callout-warning" style="margin-top: 18px;">
+            <div class="callout-icon">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <strong>Educational Disclaimer:</strong> This indicator provides educational guidance based on standard electrochemical literature. Actual battery longevity is governed by the vehicle BMS, thermal cooling systems, ambient temperature, and specific cell chemistry.
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/range.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      initRangePage();
+    });
+  </script>
+</body>
+</html>

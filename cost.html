@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexCell — EV vs Petrol Cost & Carbon Savings</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2316A34A'><path d='M13 2L3 14h9l-1 8 10-12h-9l1-8z'/></svg>">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-link">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <span class="brand-name">ApexCell</span>
+      </a>
+
+      <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Navigation" aria-expanded="false">
+        <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <ul id="nav-menu" class="nav-menu">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="profile.html" class="nav-link">EV Profile</a></li>
+        <li><a href="cost.html" class="nav-link active">Cost & Carbon</a></li>
+        <li><a href="trip.html" class="nav-link">Trip Planner</a></li>
+        <li><a href="range.html" class="nav-link">Range & Battery</a></li>
+        <li><a href="about.html" class="nav-link">About & Methodology</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Persistent Vehicle-Profile Summary Bar -->
+  <aside class="profile-summary-bar">
+    <div class="summary-container">
+      <div class="summary-chips">
+        <div class="summary-chip">
+          <span class="chip-label">Active EV:</span>
+          <span id="summary-vehicle-name" class="chip-val">Tata Nexon EV LR</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Battery:</span>
+          <span id="summary-battery-cap" class="chip-val">40.5 kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Efficiency:</span>
+          <span id="summary-efficiency" class="chip-val">6.2 km/kWh</span>
+        </div>
+        <div class="summary-chip">
+          <span class="chip-label">Home Tariff:</span>
+          <span id="summary-tariff" class="chip-val">₹7.00/kWh</span>
+        </div>
+      </div>
+      <div>
+        <a href="profile.html" class="summary-edit-btn">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Edit Profile
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="page-header">
+      <h1 class="page-title">Module A: EV vs Petrol Cost & Carbon Savings</h1>
+      <p class="page-subtitle">See what your daily driving saves compared with petrol. Real-time payoff calculator and transparent carbon accounting.</p>
+    </div>
+
+    <div class="module-grid">
+      
+      <!-- Input Panel (40%) -->
+      <section class="card">
+        <h2 class="card-title">
+          <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+          Driving & Price Parameters
+        </h2>
+        <p class="card-subtitle">Adjust usage patterns and cost variables to calculate running economics.</p>
+
+        <!-- Daily Distance Slider -->
+        <div class="form-group">
+          <div class="slider-header">
+            <label for="daily-distance-slider" class="form-label">Average Daily Commute</label>
+            <span id="daily-distance-val" class="slider-val-badge">45 km/day</span>
+          </div>
+          <input type="range" id="daily-distance-slider" min="10" max="200" step="5" value="45">
+          <div class="range-marks">
+            <span>10 km</span>
+            <span>50 km</span>
+            <span>100 km</span>
+            <span>150 km</span>
+            <span>200 km</span>
+          </div>
+          <div class="input-with-unit" style="margin-top: 10px;">
+            <input type="number" id="daily-distance-input" class="form-control" min="5" max="500" value="45">
+            <span class="input-unit">km/day</span>
+          </div>
+          <p class="form-hint">Typical Indian metropolitan or suburban commute distance.</p>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 18px 0;">
+
+        <!-- Petrol Price -->
+        <div class="form-group">
+          <label for="petrol-price-input" class="form-label">Petrol Price (₹/litre)</label>
+          <div class="input-with-unit">
+            <input type="number" id="petrol-price-input" class="form-control" step="0.5" value="104.50">
+            <span class="input-unit">₹/L</span>
+          </div>
+        </div>
+
+        <!-- Electricity Tariff -->
+        <div class="form-group">
+          <label for="electricity-tariff-input" class="form-label">Electricity Tariff (₹/kWh)</label>
+          <div class="input-with-unit">
+            <input type="number" id="electricity-tariff-input" class="form-control" step="0.25" value="7.00">
+            <span class="input-unit">₹/kWh</span>
+          </div>
+          <p class="form-hint">Home DISCOM residential slab rate.</p>
+        </div>
+
+        <!-- EV Efficiency -->
+        <div class="form-group">
+          <label for="ev-efficiency-input" class="form-label">EV Real Efficiency</label>
+          <div class="input-with-unit">
+            <input type="number" id="ev-efficiency-input" class="form-control" step="0.1" value="6.2">
+            <span class="input-unit">km/kWh</span>
+          </div>
+        </div>
+
+        <!-- Petrol Efficiency -->
+        <div class="form-group">
+          <label for="petrol-efficiency-input" class="form-label">Petrol Car Mileage</label>
+          <div class="input-with-unit">
+            <input type="number" id="petrol-efficiency-input" class="form-control" step="0.5" value="15.2">
+            <span class="input-unit">km/litre</span>
+          </div>
+        </div>
+
+        <!-- Purchase Price Difference -->
+        <div class="form-group">
+          <label for="price-delta-input" class="form-label">EV Purchase Price Premium (Delta)</label>
+          <div class="input-with-unit">
+            <input type="number" id="price-delta-input" class="form-control" step="10000" value="550000">
+            <span class="input-unit">₹</span>
+          </div>
+          <p class="form-hint">Extra upfront cost paid for EV over equivalent petrol variant.</p>
+        </div>
+
+      </section>
+
+      <!-- Result Dashboard (60%) -->
+      <section class="results-container">
+        
+        <!-- Headline Metrics Row -->
+        <div class="metrics-row">
+          <div class="metric-card highlight success">
+            <span class="metric-label">Monthly Savings</span>
+            <span id="monthly-savings-val" class="metric-value text-success">₹7,760</span>
+            <span class="metric-subtext">Direct monthly fuel savings</span>
+          </div>
+
+          <div class="metric-card success">
+            <span class="metric-label">Annual Savings</span>
+            <span id="annual-savings-val" class="metric-value text-success">₹93,120</span>
+            <span class="metric-subtext">Recurring yearly operational benefit</span>
+          </div>
+
+          <div class="metric-card warning">
+            <span class="metric-label">Payback Horizon</span>
+            <span id="payback-val" class="metric-value text-accent">5.9 yrs</span>
+            <span class="metric-subtext">To recover purchase premium</span>
+          </div>
+
+          <div class="metric-card info">
+            <span class="metric-label">Net CO2 Avoided</span>
+            <span id="co2-val" class="metric-value" style="color: #0284C7;">1.52 t</span>
+            <span id="trees-equiv-text" class="metric-subtext">Equivalent to ~70 trees planted</span>
+          </div>
+        </div>
+
+        <!-- Visual Bar Comparison -->
+        <div class="card">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            Monthly Fuel vs Energy Expenditure
+          </h3>
+          <p class="card-subtitle">Visualized for 1,350 km monthly travel at selected tariffs.</p>
+
+          <div class="comparison-container">
+            <div class="comparison-item">
+              <div class="comparison-label-row">
+                <span>Petrol Vehicle (15.2 km/L @ ₹104.50/L)</span>
+                <span id="petrol-cost-label" class="num-tabular" style="color: var(--danger);">₹9,287/mo</span>
+              </div>
+              <div class="bar-track">
+                <div id="petrol-bar-fill" class="bar-fill petrol" style="width: 100%;">100%</div>
+              </div>
+            </div>
+
+            <div class="comparison-item">
+              <div class="comparison-label-row">
+                <span>Electric Vehicle (6.2 km/kWh @ ₹7.00/kWh)</span>
+                <span id="ev-cost-label" class="num-tabular" style="color: var(--secondary);">₹1,524/mo</span>
+              </div>
+              <div class="bar-track">
+                <div id="ev-bar-fill" class="bar-fill ev" style="width: 16%;">16%</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border);">
+            <div style="background: var(--surface-alt); padding: 12px 16px; border-radius: var(--radius-md);">
+              <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Cost per KM (Petrol)</span>
+              <strong id="petrol-per-km-val" class="num-tabular" style="font-size: 1.3rem; color: var(--danger);">₹6.88/km</strong>
+            </div>
+            <div style="background: #F0FDF4; padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid #BBF7D0;">
+              <span style="font-size: 0.8rem; color: #166534; display: block;">Cost per KM (Electric)</span>
+              <strong id="ev-per-km-val" class="num-tabular" style="font-size: 1.3rem; color: var(--secondary);">₹1.13/km</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Payback Horizon Card -->
+        <div class="card">
+          <h3 class="card-title">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Capital Investment Payback Horizon
+          </h3>
+          <p id="payback-progress-label" class="card-subtitle">Recovers upfront price premium in ~5.9 years.</p>
+          
+          <div class="payback-bar">
+            <div id="payback-progress-fill" class="payback-fill" style="width: 60%;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted);">
+            <span>Purchase Year 0</span>
+            <span>Year 2.5</span>
+            <span>Year 5.0 (Standard Lifecycle)</span>
+          </div>
+
+          <div class="callout callout-info" style="margin-top: 18px;">
+            <div class="callout-icon">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+            </div>
+            <div>
+              <strong>Transparent Environmental Accounting:</strong> CO2 avoided calculation accounts for India's national electricity grid emission factor of <strong>0.716 kg CO2/kWh</strong> (Central Electricity Authority Baseline Database) and petrol emissions of <strong>2.31 kg CO2/L</strong>.
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>ApexCell</h3>
+        <p>Unified EV Cost, Trip & Battery Insights Platform. Designed for Indian electric vehicle owners, prospective buyers, and sustainable fleet operators.</p>
+        <p style="margin-top: 8px; font-size: 0.78rem; color: #64748B;">Unified EV Intelligence & Sustainable Mobility Platform</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="profile.html">EV Profile Settings</a></li>
+          <li><a href="cost.html">Cost & Carbon Savings</a></li>
+          <li><a href="trip.html">Trip Planner</a></li>
+          <li><a href="range.html">Range & Battery Health</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="about.html#assumptions">Calculation Assumptions</a></li>
+          <li><a href="about.html#limitations">Scope & Disclaimers</a></li>
+          <li><a href="about.html#team">Engineering Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 ApexCell Technologies. All rights reserved.</div>
+      <div>Enterprise EV Decision Workspace • Integrated GPS Route Simulation</div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/cost.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      initCostPage();
+    });
+  </script>
+</body>
+</html>
