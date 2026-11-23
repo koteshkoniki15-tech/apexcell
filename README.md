@@ -76,13 +76,4 @@ apexcell/
 
 ---
 
-## 🚀 How to Run the Application
 
-Because ApexCell is completely standalone:
-1. Double-click `index.html` to open it in any web browser (Chrome, Edge, Firefox, Safari).
-2. Or start a local web server:
-   ```powershell
-   cd "C:\Users\chala\.gemini\antigravity\scratch\apexcell"
-   python -m http.server 8080
-   ```
-3. Open `http://localhost:8080` in your browser.
